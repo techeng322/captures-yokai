@@ -36,6 +36,25 @@ pnpm dev
 
 Open [http://localhost:3000/monitoring](http://localhost:3000/monitoring) in your browser.
 
+### Building for Production
+
+**On Windows:** The standalone build requires symlink permissions. Choose one:
+
+1. **Enable Developer Mode** (Recommended):
+   - Open Windows Settings → Privacy & Security → For developers
+   - Enable "Developer Mode"
+   - This allows symlinks without administrator privileges
+
+2. **Build in Docker** (Recommended for production):
+   ```bash
+   docker build -t captures-yokai .
+   ```
+   This avoids Windows symlink issues entirely.
+
+3. **Run as Administrator**:
+   - Right-click PowerShell/Command Prompt → "Run as Administrator"
+   - Then run `pnpm build`
+
 ## Project Structure
 
 The project follows Feature Sliced Design (FSD) architecture:

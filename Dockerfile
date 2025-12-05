@@ -1,7 +1,7 @@
 FROM node:20-alpine AS base
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Install pnpm directly (more reliable than corepack)
+RUN npm install -g pnpm@9.0.0
 
 # Install dependencies only when needed
 FROM base AS deps
