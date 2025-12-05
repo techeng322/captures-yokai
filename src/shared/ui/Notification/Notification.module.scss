@@ -9,7 +9,7 @@
   gap: 14px;
   min-width: 320px;
   max-width: 500px;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   z-index: 1000;
@@ -17,9 +17,9 @@
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -42,13 +42,17 @@
 }
 
 .notification.error {
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(153, 27, 27, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.95) 0%,
+    rgba(153, 27, 27, 0.95) 100%
+  );
   color: white;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(220, 38, 38, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset,
     0 0 40px rgba(220, 38, 38, 0.3);
-  
+
   &::before {
     background: linear-gradient(180deg, #ff6b6b, #dc2626);
     box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
@@ -56,13 +60,17 @@
 }
 
 .notification.success {
-  background: linear-gradient(135deg, rgba(22, 163, 74, 0.95) 0%, rgba(21, 128, 61, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(22, 163, 74, 0.95) 0%,
+    rgba(21, 128, 61, 0.95) 100%
+  );
   color: white;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(22, 163, 74, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset,
     0 0 40px rgba(22, 163, 74, 0.3);
-  
+
   &::before {
     background: linear-gradient(180deg, #4ade80, #22c55e);
     box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
@@ -102,9 +110,8 @@
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1) rotate(90deg);
   }
-  
+
   &:active {
     transform: scale(0.95) rotate(90deg);
   }
 }
-

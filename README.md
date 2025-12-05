@@ -47,4 +47,3 @@ src/
 ├── entities/         # Business entities
 └── features/         # Features (capture, monitoring)
 ```
-

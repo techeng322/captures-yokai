@@ -16,21 +16,21 @@ DevOps: Docker Compose for launch.
 The application consists of a single page, /monitoring, which contains:
 
 1. Anomaly List
-• Display a list of spirits (a set of cards).
-• Mock data using Next.js Route Handlers.
-• Fields: Name (e.g., Kitsune), Threat Level (color code), Location, Status (Active/Caught).
+   • Display a list of spirits (a set of cards).
+   • Mock data using Next.js Route Handlers.
+   • Fields: Name (e.g., Kitsune), Threat Level (color code), Location, Status (Active/Caught).
 
 2. Interaction
-• The spirit card should have a "Capture" button.
-• On click:
-— Sends a mutation to the API.
-— Optimistic Update is applied (the interface is updated instantly).
-— With a 30% probability, the API should return an error—the interface should correctly roll back and display a notification.
+   • The spirit card should have a "Capture" button.
+   • On click:
+   — Sends a mutation to the API.
+   — Optimistic Update is applied (the interface is updated instantly).
+   — With a 30% probability, the API should return an error—the interface should correctly roll back and display a notification.
 
 3. Real-time Update
-Implement Server-Sent Events (SSE) or simulate a WebSocket.
-Every 5 seconds, a random spirit should change its threat level (for example, from "Low" to "Critical").
-The UI should respond to this event without reloading the page.
+   Implement Server-Sent Events (SSE) or simulate a WebSocket.
+   Every 5 seconds, a random spirit should change its threat level (for example, from "Low" to "Critical").
+   The UI should respond to this event without reloading the page.
 
 📦 Result
 Link to the GitHub repository. The root should contain a docker-compose.yml file, allowing you to run the project with a single command: docker-compose up.

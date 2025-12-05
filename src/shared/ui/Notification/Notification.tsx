@@ -1,12 +1,6 @@
-import { useEffect } from 'react'
-import styles from './Notification.module.scss'
-
-interface NotificationProps {
-  message: string
-  type: 'error' | 'success'
-  onClose: () => void
-  duration?: number
-}
+import { NotificationProps } from "@/shared/types/notification";
+import { useNotificationAutoClose } from "./hooks/useNotificationAutoClose";
+import styles from "./Notification.module.scss";
 
 export function Notification({
   message,
@@ -14,13 +8,7 @@ export function Notification({
   onClose,
   duration = 3000,
 }: NotificationProps) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose()
-    }, duration)
-
-    return () => clearTimeout(timer)
-  }, [duration, onClose])
+  useNotificationAutoClose({ onClose, duration });
 
   return (
     <div className={`${styles.notification} ${styles[type]}`}>
@@ -29,6 +17,5 @@ export function Notification({
         ×
       </button>
     </div>
-  )
+  );
 }
-

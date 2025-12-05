@@ -1,2 +1,1 @@
-export { SpiritCard } from './SpiritCard'
-
+export { SpiritCard } from "./SpiritCard";

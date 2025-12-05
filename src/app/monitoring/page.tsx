@@ -1,79 +1,35 @@
-'use client'
+"use client";
 
-import { useState, useMemo } from 'react'
-import { useSpirits } from '@/features/monitoring-spirits/hooks/useSpirits'
-import { useCaptureSpirit } from '@/features/capture-spirit/hooks/useCaptureSpirit'
-import { useSpiritUpdates } from '@/features/monitoring-spirits/hooks/useSpiritUpdates'
-import { SpiritCard } from '@/shared/ui/SpiritCard/SpiritCard'
-import { Notification } from '@/shared/ui/Notification/Notification'
-import { ThreatLevel } from '@/shared/types/spirit'
-import styles from './page.module.scss'
-
-interface NotificationState {
-  message: string
-  type: 'error' | 'success'
-}
+import { useSpirits } from "@/features/monitoring-spirits/hooks/useSpirits";
+import { useSpiritUpdates } from "@/features/monitoring-spirits/hooks/useSpiritUpdates";
+import { useMonitoringStatistics } from "@/features/monitoring-spirits/hooks/useMonitoringStatistics";
+import { useConnectionStatus } from "@/features/monitoring-spirits/hooks/useConnectionStatus";
+import { useCaptureHandler } from "@/features/monitoring-spirits/hooks/useCaptureHandler";
+import { SpiritCard } from "@/shared/ui/SpiritCard/SpiritCard";
+import { Notification } from "@/shared/ui/Notification/Notification";
+import styles from "./page.module.scss";
 
 export default function MonitoringPage() {
-  const { data: spirits, isLoading, error } = useSpirits()
-  const captureMutation = useCaptureSpirit()
-  const [notification, setNotification] = useState<NotificationState | null>(
-    null
-  )
-  const [capturingId, setCapturingId] = useState<string | null>(null)
+  const { data: spirits, isLoading, error } = useSpirits();
+  const statistics = useMonitoringStatistics(spirits);
+  const { isConnected, lastUpdateTime } = useConnectionStatus();
+  const { capturingId, notification, handleCapture, clearNotification } =
+    useCaptureHandler();
 
   // Set up real-time updates
-  useSpiritUpdates()
-
-  const statistics = useMemo(() => {
-    if (!spirits) return null
-
-    const active = spirits.filter((s) => s.status === 'Active').length
-    const caught = spirits.filter((s) => s.status === 'Caught').length
-    const threatLevels = spirits.reduce(
-      (acc, spirit) => {
-        acc[spirit.threatLevel] = (acc[spirit.threatLevel] || 0) + 1
-        return acc
-      },
-      {} as Record<ThreatLevel, number>
-    )
-
-    return {
-      total: spirits.length,
-      active,
-      caught,
-      threatLevels,
-    }
-  }, [spirits])
-
-  const handleCapture = async (id: string) => {
-    setCapturingId(id)
-    try {
-      await captureMutation.mutateAsync(id)
-      setNotification({
-        message: 'Spirit captured successfully!',
-        type: 'success',
-      })
-    } catch (err) {
-      setNotification({
-        message:
-          err instanceof Error ? err.message : 'Failed to capture spirit',
-        type: 'error',
-      })
-    } finally {
-      setCapturingId(null)
-    }
-  }
+  useSpiritUpdates();
 
   if (isLoading) {
     return (
       <div className={styles.container}>
         <div className={styles.loadingContainer}>
           <div className={styles.loadingSpinner}></div>
-          <div className={styles.loading}>Scanning for spiritual anomalies...</div>
+          <div className={styles.loading}>
+            Scanning for spiritual anomalies...
+          </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -87,7 +43,7 @@ export default function MonitoringPage() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -104,8 +60,21 @@ export default function MonitoringPage() {
             </p>
           </div>
           <div className={styles.statusIndicator}>
-            <span className={styles.statusDot}></span>
-            <span className={styles.statusText}>Live</span>
+            <div>
+              <span
+                className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}
+              ></span>
+              <span className={styles.statusText}>
+                {isConnected ? "Live" : "Disconnected"}
+              </span>
+            </div>
+            {lastUpdateTime && (
+              <span className={styles.lastUpdate}>
+                Updated{" "}
+                {Math.floor((Date.now() - lastUpdateTime.getTime()) / 1000)}s
+                ago
+              </span>
+            )}
           </div>
         </div>
       </header>
@@ -184,10 +153,9 @@ export default function MonitoringPage() {
         <Notification
           message={notification.message}
           type={notification.type}
-          onClose={() => setNotification(null)}
+          onClose={clearNotification}
         />
       )}
     </div>
-  )
+  );
 }
-

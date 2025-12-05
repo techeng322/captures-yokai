@@ -1,51 +1,38 @@
-import { Spirit, ThreatLevel } from '@/shared/types/spirit'
-import styles from './SpiritCard.module.scss'
+import { SpiritCardProps } from "@/shared/types/spirit-card";
+import { useSpiritCard } from "@/features/monitoring-spirits/hooks/useSpiritCard";
+import {
+  getThreatLevelColor,
+  getThreatLevelGlow,
+  getThreatLevelPercentage,
+} from "@/shared/lib/threat-level";
+import styles from "./SpiritCard.module.scss";
 
-interface SpiritCardProps {
-  spirit: Spirit
-  onCapture: (id: string) => void
-  isCapturing?: boolean
-}
+export function SpiritCard({
+  spirit,
+  onCapture,
+  isCapturing,
+}: SpiritCardProps) {
+  const { isUpdating } = useSpiritCard({
+    spiritId: spirit.id,
+    threatLevel: spirit.threatLevel,
+  });
 
-const threatLevelColors: Record<ThreatLevel, string> = {
-  Low: '#4ade80',
-  Medium: '#fbbf24',
-  High: '#f97316',
-  Critical: '#ef4444',
-}
-
-const threatLevelGlowColors: Record<ThreatLevel, string> = {
-  Low: 'rgba(74, 222, 128, 0.3)',
-  Medium: 'rgba(251, 191, 36, 0.3)',
-  High: 'rgba(249, 115, 22, 0.3)',
-  Critical: 'rgba(239, 68, 68, 0.5)',
-}
-
-const threatLevelValues: Record<ThreatLevel, number> = {
-  Low: 1,
-  Medium: 2,
-  High: 3,
-  Critical: 4,
-}
-
-const getThreatLevelPercentage = (level: ThreatLevel): number => {
-  return (threatLevelValues[level] / 4) * 100
-}
-
-export function SpiritCard({ spirit, onCapture, isCapturing }: SpiritCardProps) {
-  const threatColor = threatLevelColors[spirit.threatLevel]
-  const threatGlow = threatLevelGlowColors[spirit.threatLevel]
-  const threatPercentage = getThreatLevelPercentage(spirit.threatLevel)
-  const isActive = spirit.status === 'Active'
-  const isCaught = spirit.status === 'Caught'
+  const threatColor = getThreatLevelColor(spirit.threatLevel);
+  const threatGlow = getThreatLevelGlow(spirit.threatLevel);
+  const threatPercentage = getThreatLevelPercentage(spirit.threatLevel);
+  const isActive = spirit.status === "Active";
+  const isCaught = spirit.status === "Caught";
 
   return (
     <div
-      className={`${styles.card} ${isCaught ? styles.caught : ''}`}
-      style={{
-        '--threat-color': threatColor,
-        '--threat-glow': threatGlow,
-      } as React.CSSProperties}
+      data-spirit-id={spirit.id}
+      className={`${styles.card} ${isCaught ? styles.caught : ""} ${isUpdating ? styles.updating : ""}`}
+      style={
+        {
+          "--threat-color": threatColor,
+          "--threat-glow": threatGlow,
+        } as React.CSSProperties
+      }
     >
       {/* Threat Level Indicator Bar */}
       <div className={styles.threatBar}>
@@ -65,14 +52,24 @@ export function SpiritCard({ spirit, onCapture, isCapturing }: SpiritCardProps) 
           <span className={styles.spiritType}>Yokai Spirit</span>
         </div>
         <div
-          className={styles.threatBadge}
           style={{
-            backgroundColor: threatColor,
-            boxShadow: `0 0 15px ${threatGlow}`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: "6px",
           }}
         >
-          <span className={styles.threatIcon}>⚠</span>
-          {spirit.threatLevel}
+          {isUpdating && <span className={styles.updateBadge}>UPDATED</span>}
+          <div
+            className={styles.threatBadge}
+            style={{
+              backgroundColor: threatColor,
+              boxShadow: `0 0 15px ${threatGlow}`,
+            }}
+          >
+            <span className={styles.threatIcon}>⚠</span>
+            {spirit.threatLevel}
+          </div>
         </div>
       </div>
 
@@ -97,7 +94,7 @@ export function SpiritCard({ spirit, onCapture, isCapturing }: SpiritCardProps) 
                   isActive ? styles.active : styles.caught
                 }`}
               >
-                {isActive ? '●' : '✓'} {spirit.status}
+                {isActive ? "●" : "✓"} {spirit.status}
               </span>
             </div>
           </div>
@@ -151,6 +148,5 @@ export function SpiritCard({ spirit, onCapture, isCapturing }: SpiritCardProps) 
         </div>
       )}
     </div>
-  )
+  );
 }
-
