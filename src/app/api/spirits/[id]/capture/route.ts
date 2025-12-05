@@ -4,6 +4,9 @@ import { Spirit, SpiritSchema } from "@/shared/types/spirit";
 import { ParamsSchema } from "@/shared/types/api";
 import { mockSpirits } from "@/shared/lib/mockSpirits";
 
+// Force dynamic rendering - API routes with dynamic params should not be statically generated
+export const dynamic = 'force-dynamic';
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }

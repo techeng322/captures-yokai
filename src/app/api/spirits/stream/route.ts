@@ -2,6 +2,9 @@ import { NextRequest } from "next/server";
 import { ThreatLevel } from "@/shared/types/spirit";
 import { mockSpirits } from "@/shared/lib/mockSpirits";
 
+// Force dynamic rendering - this route cannot be statically generated
+export const dynamic = 'force-dynamic';
+
 const spiritIds = mockSpirits.map((spirit) => spirit.id);
 const threatLevels: ThreatLevel[] = ["Low", "Medium", "High", "Critical"];
 

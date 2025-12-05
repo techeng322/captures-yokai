@@ -3,6 +3,9 @@ import { z } from "zod";
 import { SpiritSchema } from "@/shared/types/spirit";
 import { mockSpirits } from "@/shared/lib/mockSpirits";
 
+// Force dynamic rendering - API routes should not be statically generated
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     // Validate all spirits with Zod before returning
