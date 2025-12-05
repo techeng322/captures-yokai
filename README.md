@@ -2,6 +2,8 @@
 
 A real-time monitoring dashboard built with Next.js for tracking and capturing yokai (spirits) across Tokyo. Operators can monitor spiritual energy spikes in real-time and dispatch cleanup teams to capture anomalies.
 
+<img width="1253" height="1282" alt="image" src="https://github.com/user-attachments/assets/c7995c11-15cc-4642-a87c-3b0c6fb8c5d3" />
+
 ## 📋 Table of Contents
 
 - [Features](#features)
